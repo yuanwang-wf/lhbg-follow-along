@@ -1,0 +1,4 @@
+
+* Learn Haskell by builing a blog generator
+
+https://lhbg-book.link/02-hello.html
