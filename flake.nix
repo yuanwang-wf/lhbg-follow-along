@@ -10,18 +10,23 @@
 
   outputs = { self, nixpkgs, flake-utils, devshell }:
     flake-utils.lib.eachDefaultSystem (system:
-      with nixpkgs.legacyPackages.${system};
       let
-        t = lib.trivial;
-        hl = haskell.lib;
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ devshell.overlay  ];
+        };
+
+
+        t = pkgs.lib.trivial;
+        hl = pkgs.haskell.lib;
 
         name = "haskell-hello";
 
         project = devTools: # [1]
           let addBuildTools = (t.flip hl.addBuildTools) devTools;
-          in haskellPackages.developPackage {
+          in pkgs.haskellPackages.developPackage {
             root =
-              lib.sourceFilesBySuffices ./. [ ".cabal" ".hs" "package.yaml" ];
+              nixpkgs.lib.sourceFilesBySuffices ./. [ ".cabal" ".hs" "package.yaml" ];
             name = name;
             returnShellEnv = !(devTools == [ ]); # [2]
 
@@ -40,12 +45,13 @@
 
         defaultPackage = self.packages.${system}.pkg;
 
-        devShell = project (with haskellPackages; [ # [4]
+        devShell = project (with pkgs.haskellPackages; [ # [4]
           cabal-fmt
           cabal-install
           haskell-language-server
           hlint
-          treefmt
+          ormolu
+          pkgs.treefmt
         ]);
       });
 }
