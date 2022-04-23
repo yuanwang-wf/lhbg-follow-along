@@ -8,34 +8,41 @@
   };
 
   outputs = { self, nixpkgs , flake-utils }:
-    let
-      supportedSystems = [ "x86_64-linux" "x86_64-darwin" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
-      nixpkgsFor = forAllSystems (system: import nixpkgs {
-        inherit system;
-        overlays = [ self.overlay ];
+     flake-utils.lib.eachDefaultSystem (system:
+      with nixpkgs.legacyPackages.${system};
+      let
+        t = lib.trivial;
+        hl = haskell.lib;
+
+        name = "haskell-hello";
+
+        project = devTools: # [1]
+          let addBuildTools = (t.flip hl.addBuildTools) devTools;
+          in haskellPackages.developPackage {
+            root = lib.sourceFilesBySuffices ./. [ ".cabal" ".hs" "package.yaml" ];
+            name = name;
+            returnShellEnv = !(devTools == [ ]); # [2]
+
+            modifier = (t.flip t.pipe) [
+              addBuildTools
+              hl.dontHaddock
+              hl.enableStaticLibraries
+              hl.justStaticExecutables
+              hl.disableLibraryProfiling
+              hl.disableExecutableProfiling
+            ];
+          };
+
+      in {
+        packages.pkg = project [ ]; # [3]
+
+        defaultPackage = self.packages.${system}.pkg;
+
+        devShell = project (with haskellPackages; [ # [4]
+          cabal-fmt
+          cabal-install
+          haskell-language-server
+          hlint
+        ]);
       });
-    in
-    {
-      overlay = (final: prev: {
-        haskell-hello = final.haskellPackages.callCabal2nix "haskell-hello" ./. {};
-      });
-      packages = forAllSystems (system: {
-         haskell-hello = nixpkgsFor.${system}.haskell-hello;
-      });
-      defaultPackage = forAllSystems (system: self.packages.${system}.haskell-hello);
-      checks = self.packages;
-      devShell = forAllSystems (system: let haskellPackages = nixpkgsFor.${system}.haskellPackages;
-        in haskellPackages.shellFor {
-          packages = p: [self.packages.${system}.haskell-hello];
-          withHoogle = true;
-          buildInputs = with haskellPackages; [
-            haskell-language-server
-            ghcid
-            cabal-install
-          ];
-        # Change the prompt to show that you are in a devShell
-        shellHook = "export PS1='\\e[1;34mdev > \\e[0m'";
-        });
-  };
 }
