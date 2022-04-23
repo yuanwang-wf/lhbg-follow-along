@@ -16,3 +16,6 @@ nix develop
 ~nix develop~
 
 ~runghc Main.hs~
+
+* current step
+https://lhbg-book.link/03-html/03-edsls.html
