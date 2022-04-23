@@ -2,3 +2,11 @@
 * Learn Haskell by builing a blog generator
 
 https://lhbg-book.link/02-hello.html
+
+* setup
+
+started with ~nix flake init -t github:NixOS/templates#haskell-hello~
+
+nix develop
+
+~ghc --version~ ~9.0.2~
