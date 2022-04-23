@@ -10,3 +10,9 @@ started with ~nix flake init -t github:NixOS/templates#haskell-hello~
 nix develop
 
 ~ghc --version~ ~9.0.2~
+
+* run shell
+
+~nix develop~
+
+~runghc Main.hs~

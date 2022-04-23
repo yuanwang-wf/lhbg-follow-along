@@ -1,6 +1,8 @@
 module Main where
 
-import HaskellSay (haskellSay)
+
 
 main :: IO ()
-main = haskellSay "Hello Haskell Nixers!"
+main = putStrLn myhtml
+
+myhtml = "<html><body>Hello, world!</body></html>"
