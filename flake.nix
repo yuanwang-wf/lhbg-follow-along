@@ -1,5 +1,4 @@
 {
-  # inspired by: https://serokell.io/blog/practical-nix-flakes#packaging-existing-applications
   description = "A Hello World in Haskell with a dependency and a devShell";
 
   inputs = {
@@ -36,8 +35,6 @@
             ];
             name = name;
             returnShellEnv = !(devTools == [ ]); # [2]
-            # overrides = hself: hsuper: {
-            # };
             modifier = (t.flip t.pipe) [
 
               addBuildTools
