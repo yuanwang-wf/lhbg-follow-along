@@ -44,15 +44,21 @@
         packages.pkg = project [ ]; # [3]
 
         defaultPackage = self.packages.${system}.pkg;
-
-        devShell = project (with pkgs.haskellPackages; [ # [4]
-          cabal-fmt
-          cabal-install
-          haskell-language-server
-          hlint
-          ormolu
-          pkgs.treefmt
-        ]);
+devShell = pkgs.devshell.mkShell {
+  inherit name;
+          imports = [ (pkgs.devshell.extraModulesDir + "/git/hooks.nix") ];
+          git.hooks.enable = true;
+          git.hooks.pre-commit.text = "${pkgs.treefmt}/bin/treefmt";
+          packages = [ (project [] ) pkgs.treefmt pkgs.cabal2nix pkgs.nixfmt ];
+        };
+        # devShell = project (with pkgs.haskellPackages; [ # [4]
+        #   cabal-fmt
+        #   cabal-install
+        #   haskell-language-server
+        #   hlint
+        #   ormolu
+        #   pkgs.treefmt
+        # ]);
 
       });
 }
