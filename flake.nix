@@ -4,16 +4,17 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
-    devshell.url = "github:numtide/devshell";
-    flake-utils.url = "github:numtide/flake-utils";
+    # devshell.url = "github:numtide/devshell";
+     flake-utils.url = "github:numtide/flake-utils";
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
 
-  outputs = { self, nixpkgs, flake-utils, devshell }:
+  outputs = { self, nixpkgs, flake-utils,  pre-commit-hooks }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ devshell.overlay  ];
+          overlays = [  ];
         };
 
 
@@ -22,6 +23,9 @@
 
         name = "haskell-hello";
 
+        wireHook =          drv: drv.overrideAttrs (oldAttrs: rec {
+                inherit (self.checks.${system}.pre-commit-check) shellHook;
+              });
         project = devTools: # [1]
           let addBuildTools = (t.flip hl.addBuildTools) devTools;
           in pkgs.haskellPackages.developPackage {
@@ -31,6 +35,7 @@
             returnShellEnv = !(devTools == [ ]); # [2]
 
             modifier = (t.flip t.pipe) [
+              wireHook
               addBuildTools
               hl.dontHaddock
               hl.enableStaticLibraries
@@ -42,23 +47,30 @@
 
       in {
         packages.pkg = project [ ]; # [3]
-
-        defaultPackage = self.packages.${system}.pkg;
-devShell = pkgs.devshell.mkShell {
-  inherit name;
-          imports = [ (pkgs.devshell.extraModulesDir + "/git/hooks.nix") ];
-          git.hooks.enable = true;
-          git.hooks.pre-commit.text = "${pkgs.treefmt}/bin/treefmt";
-          packages = [ (project [] ) pkgs.treefmt pkgs.cabal2nix pkgs.nixfmt ];
+checks = {
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              nixpkgs-fmt.enable = true;
+                ormolu.enable = true;
+            };
+          };
         };
-        # devShell = project (with pkgs.haskellPackages; [ # [4]
-        #   cabal-fmt
-        #   cabal-install
-        #   haskell-language-server
-        #   hlint
-        #   ormolu
-        #   pkgs.treefmt
-        # ]);
+        defaultPackage = self.packages.${system}.pkg;
+# devShell = pkgs.devshell.mkShell {
+#   inherit name;
+#           imports = [ (pkgs.devshell.extraModulesDir + "/git/hooks.nix") ];
+#           git.hooks.enable = true;
+#           git.hooks.pre-commit.text = "${pkgs.treefmt}/bin/treefmt";
+#           packages = [ (project [] ) pkgs.treefmt pkgs.cabal2nix pkgs.nixfmt ];
+#         };
+        devShell = project (with pkgs.haskellPackages; [ # [4]
+          cabal-fmt
+          cabal-install
+          haskell-language-server
+          hlint
+          ormolu
+        ]);
 
       });
 }
