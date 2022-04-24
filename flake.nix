@@ -21,9 +21,16 @@
 
         name = "haskell-hello";
 
+        wireShellhook = haskellPackage:
+          hl.overrideCabal haskellPackage (oldAttributes: {
+            # shellHook = (oldAttributes.shellHook or "") +
+
+            inherit (self.checks.${system}.pre-commit-check) shellHook;
+          });
         project = devTools: # [1]
           let addBuildTools = (t.flip hl.addBuildTools) devTools;
-          in pkgs.haskellPackages.developPackage {
+          in
+          pkgs.haskellPackages.developPackage {
             root = nixpkgs.lib.sourceFilesBySuffices ./. [
               ".cabal"
               ".hs"
@@ -31,11 +38,12 @@
             ];
             name = name;
             returnShellEnv = !(devTools == [ ]); # [2]
-            overrides = hself: hsuper: {
-              inherit (self.checks.${system}.pre-commit-check) shellHook;
-            };
+            # overrides = hself: hsuper: {
+            # };
             modifier = (t.flip t.pipe) [
+
               addBuildTools
+              wireShellhook
               hl.dontHaddock
               hl.enableStaticLibraries
               hl.justStaticExecutables
@@ -44,7 +52,8 @@
             ];
           };
 
-      in {
+      in
+      {
         packages.pkg = project [ ]; # [3]
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
@@ -56,7 +65,8 @@
           };
         };
         defaultPackage = self.packages.${system}.pkg;
-        devShell = project (with pkgs.haskellPackages; [ # [4]
+        devShell = project (with pkgs.haskellPackages; [
+          # [4]
           cabal-fmt
           cabal-install
           haskell-language-server
