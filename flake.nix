@@ -23,9 +23,7 @@
 
         wireShellhook = haskellPackage:
           hl.overrideCabal haskellPackage (oldAttributes: {
-            # shellHook = (oldAttributes.shellHook or "") +
-
-            inherit (self.checks.${system}.pre-commit-check) shellHook;
+            shellHook = (oldAttributes.shellHook or "") + self.checks.${system}.pre-commit-check.shellHook;
           });
         project = devTools: # [1]
           let addBuildTools = (t.flip hl.addBuildTools) devTools;
