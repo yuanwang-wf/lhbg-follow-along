@@ -29,3 +29,4 @@ cabal.project.local~
 
 result
 .envrc
+/.pre-commit-config.yaml
