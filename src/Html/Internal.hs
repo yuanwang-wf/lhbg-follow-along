@@ -54,3 +54,16 @@ escape =
           '\'' -> "&#39;"
           _ -> [c]
    in concatMap escapeChar
+
+ul_ :: [Structure] -> Structure
+ul_ = Structure . el "ul" . concatMap li_
+  where
+    li_ = el "li" . getStructureString
+
+ol_ :: [Structure] -> Structure
+ol_ = Structure . el "ol" . concatMap li_
+  where
+    li_ = el "li" . getStructureString
+
+code_ :: String -> Structure
+code_ = Structure . el "pre" . escape
