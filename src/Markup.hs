@@ -32,7 +32,7 @@ example4 =
     Paragraph "Running ghc invokes the Glasgow Haskell Compiler (GHC), and can be used to compile Haskell modules and programs into native executables and libraries.",
     Paragraph "Create a new Haskell source file named hello.hs, and write the following code in it:",
     CodeBlock ["> main = putStrLn    \"Hello, Haskell!\""],
-    -- Paragraph "Now, we can compile the program by invoking ghc with the file name:",
+    Paragraph "Now, we can compile the program by invoking ghc with the file name:",
     --  CodeBlock
     --  [
     --  " ➜ ghc hello.hs",
