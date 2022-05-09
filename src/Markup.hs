@@ -40,11 +40,11 @@ example4 =
     -- " Linking hello ..."
     -- ],
     Paragraph "GHC created the following files:",
-    --  UnorderedList [
-    -- "hello.hi - Haskell interface file",
-    -- "hello.o - Object file, the output of the compiler before linking",
-    -- "hello (or hello.exe on Microsoft Windows) - A native runnable executable."],
-
+    UnorderedList
+      [ "hello.hi - Haskell interface file",
+        "hello.o - Object file, the output of the compiler before linking",
+        "hello (or hello.exe on Microsoft Windows) - A native runnable executable."
+      ],
     Paragraph "GHC will produce an executable when the source file satisfies both conditions:",
     OrderedList
       [ "Defines the main function in the source file",
