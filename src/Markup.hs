@@ -48,8 +48,9 @@ example4 =
 
     -- Paragraph "GHC will produce an executable when the source file satisfies both conditions:"
     -- ,
-    -- OrderedList ["Defines the main function in the source file",
-    --  "Defines the module name to be Main, or does not have a module declaration"]
-
+    OrderedList
+      [ "Defines the main function in the source file",
+        "Defines the module name to be Main, or does not have a module declaration"
+      ],
     Paragraph "Otherwise, it will only produce the .o and .hi files."
   ]
