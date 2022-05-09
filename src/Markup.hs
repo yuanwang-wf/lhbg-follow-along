@@ -39,8 +39,7 @@ example4 =
     -- " [1 of 1] Compiling Main             ( hello.hs, hello.o )",
     -- " Linking hello ..."
     -- ],
-    -- Paragraph "GHC created the following files:",
-
+    Paragraph "GHC created the following files:",
     --  UnorderedList [
     -- "hello.hi - Haskell interface file",
     -- "hello.o - Object file, the output of the compiler before linking",
