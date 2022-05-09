@@ -46,8 +46,7 @@ example4 =
     -- "hello.o - Object file, the output of the compiler before linking",
     -- "hello (or hello.exe on Microsoft Windows) - A native runnable executable."],
 
-    -- Paragraph "GHC will produce an executable when the source file satisfies both conditions:"
-    -- ,
+    Paragraph "GHC will produce an executable when the source file satisfies both conditions:",
     OrderedList
       [ "Defines the main function in the source file",
         "Defines the module name to be Main, or does not have a module declaration"
