@@ -1,4 +1,4 @@
-module Markup where
+module Markup (Document, Structure (..)) where
 
 import GHC.Num (Natural)
 
@@ -11,6 +11,7 @@ data Structure
   | UnorderedList [String]
   | OrderedList [String]
   | CodeBlock [String]
+  deriving (Show)
 
 example1 :: Document
 example1 = [Paragraph "Hello, world!"]

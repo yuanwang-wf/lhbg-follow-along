@@ -29,14 +29,13 @@ el :: String -> String -> String
 el tag content =
   "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
 
-append_ :: Structure -> Structure -> Structure
-append_ c1 c2 =
-  Structure (getStructureString c1 <> getStructureString c2)
-
 getStructureString :: Structure -> String
 getStructureString content =
   case content of
     Structure str -> str
+
+instance Semigroup Structure where
+  s1 <> s2 = Structure (getStructureString s1 <> getStructureString s2)
 
 render :: Html -> String
 render html =
