@@ -33,12 +33,11 @@ example4 =
     Paragraph "Create a new Haskell source file named hello.hs, and write the following code in it:",
     CodeBlock ["> main = putStrLn    \"Hello, Haskell!\""],
     Paragraph "Now, we can compile the program by invoking ghc with the file name:",
-    --  CodeBlock
-    --  [
-    --  " ➜ ghc hello.hs",
-    -- " [1 of 1] Compiling Main             ( hello.hs, hello.o )",
-    -- " Linking hello ..."
-    -- ],
+    CodeBlock
+      [ " ➜ ghc hello.hs",
+        " [1 of 1] Compiling Main             ( hello.hs, hello.o )",
+        " Linking hello ..."
+      ],
     Paragraph "GHC created the following files:",
     UnorderedList
       [ "hello.hi - Haskell interface file",
