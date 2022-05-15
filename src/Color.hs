@@ -46,3 +46,7 @@ ansiColorToVGA ansicolor =
 isBright :: AnsiColor -> Bool
 isBright (AnsiColor Bright e) = True
 isBright _ = False
+
+-- https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
+ansiToUbuntu :: AnsiColor -> Color
+ansiToUbuntu = undefined
