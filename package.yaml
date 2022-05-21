@@ -4,10 +4,11 @@ dependencies:
   - base == 4.*
 library:
   source-dirs: src
+  ghc-options: -Wall -Werror
 
 executables:
   blog-generator-exe:
     main: Main.hs
-    ghc-options: -threaded -rtsopts -Wall -Werror
+    ghc-options: -threaded -rtsopts -W -Wall -Werror
     dependencies:
     - blog-generator
