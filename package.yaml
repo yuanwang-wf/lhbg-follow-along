@@ -5,8 +5,9 @@ dependencies:
   - haskell-say
 library:
   source-dirs: src
+
 executables:
-  haskell-hello:
+  blog-generator-exe:
     main: Main.hs
     ghc-options:
     - -threaded
