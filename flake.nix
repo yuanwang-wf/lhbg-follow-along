@@ -42,8 +42,8 @@
               hl.dontHaddock
               hl.enableStaticLibraries
               hl.justStaticExecutables
-              hl.disableLibraryProfiling
-              hl.disableExecutableProfiling
+              # hl.disableLibraryProfiling
+              # hl.disableExecutableProfiling
             ];
           };
 
