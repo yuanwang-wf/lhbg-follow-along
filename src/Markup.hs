@@ -72,3 +72,10 @@ parseLines context txts =
 
 trim :: String -> String
 trim = unwords . words
+
+data Context
+  = CtxHeading Natural String
+  | CtxParagraph [String]
+  | CtxUnorderedList [String]
+  | CtxOrderedList [String]
+  | CtxCodeBlock [String]
