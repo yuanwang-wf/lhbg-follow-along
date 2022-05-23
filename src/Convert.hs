@@ -10,4 +10,14 @@ convertStructure structure =
       Html.h1_ txt
     Markup.Paragraph p ->
       Html.p_ p
-    _ -> undefined
+    Markup.UnorderedList list ->
+      Html.ul_ $ map Html.p_ list
+    Markup.OrderedList list ->
+      Html.ol_ $ map Html.p_ list
+    Markup.CodeBlock list ->
+      Html.code_ (unlines list)
+    Markup.Heading num p ->
+      Html.h_ num p
+
+convert :: Html.Title -> Markup.Document -> Html.Html
+convert title = Html.html_ title . foldMap convertStructure

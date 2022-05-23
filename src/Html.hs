@@ -4,11 +4,13 @@ module Html
     Structure,
     html_,
     p_,
+    h_,
     h1_,
     render,
     ul_,
     ol_,
     code_,
+    empty_,
   )
 where
 
@@ -17,7 +19,9 @@ import Html.Internal
     Structure,
     Title,
     code_,
+    empty_,
     h1_,
+    h_,
     html_,
     ol_,
     p_,
