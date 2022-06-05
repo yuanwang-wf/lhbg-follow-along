@@ -33,11 +33,3 @@ import Html.Internal
 
 -- replicate' :: Int -> a -> [a]
 -- replicate' num a = if num <= 0 then [] else a : replicate' (num - 1) a
-
-even' :: Int -> Bool
-even' 0 = True
-even' n = odd' (n -1)
-
-odd' :: Int -> Bool
-odd' 0 = False
-odd' n = even' (n -1)

@@ -2,6 +2,7 @@ name: blog-generator
 
 dependencies:
   - base == 4.*
+  - directory
 library:
   source-dirs: src
   ghc-options: -Wall -Werror

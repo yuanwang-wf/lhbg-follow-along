@@ -1,7 +1,7 @@
 -- | https://lhbg-book.link/04-markup/04-parsing_02.html
 module Color where
 
-import Data.Maybe (isJust, isNothing, listToMaybe)
+import Data.Maybe (isNothing, listToMaybe)
 import Data.Word (Word8)
 
 -- | A data type representing colors
@@ -41,11 +41,12 @@ ansiColorToVGA ansicolor =
       RGB 170 0 0
     AnsiColor Bright Red ->
       RGB 255 85 85
+    _ -> undefined
 
 -- and so on
 
 isBright :: AnsiColor -> Bool
-isBright (AnsiColor Bright e) = True
+isBright (AnsiColor Bright _) = True
 isBright _ = False
 
 -- https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
@@ -60,6 +61,7 @@ ansiToUbuntu ansicolor =
       RGB 170 0 0
     AnsiColor Bright Red ->
       RGB 255 85 85
+    _ -> undefined
 
 isEmpty :: [a] -> Bool
 isEmpty = isNothing . listToMaybe
