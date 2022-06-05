@@ -11,6 +11,7 @@ module Html
     ol_,
     code_,
     empty_,
+    getStructureString,
   )
 where
 
@@ -20,6 +21,7 @@ import Html.Internal
     Title,
     code_,
     empty_,
+    getStructureString,
     h1_,
     h_,
     html_,
