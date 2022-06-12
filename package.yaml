@@ -13,3 +13,4 @@ executables:
     ghc-options: -threaded -rtsopts -W -Wall -Werror
     dependencies:
     - blog-generator
+    - optparse-applicative

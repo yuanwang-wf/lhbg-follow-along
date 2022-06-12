@@ -1,7 +1,7 @@
 module Main where
 
 import Convert
-import Html
+import Options.Applicative hiding (action)
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
 
@@ -28,16 +28,39 @@ fileProcess input output = do
     handleOutput a action = if a then askP action else action
 
     askP :: IO () -> IO ()
-    askP action = do
+    askP action_ = do
       content <- getContents
-      if content == "yes" then action else putStrLn "stop"
+      if content == "yes" then action_ else putStrLn "stop"
 
-myhtml :: Html
-myhtml =
-  html_
-    "My title"
-    ( h1_ "Heading"
-        <> ( p_ "Paragraph #1"
-               <> p_ "Paragraph #3"
-           )
+data Options
+  = ConvertSingle SingleInput SingleOutput
+  | ConvertDir FilePath FilePath
+  deriving (Show)
+
+data SingleInput
+  = Stdin
+  | InputFile FilePath
+  deriving (Show)
+
+data SingleOutput
+  = Stdout
+  | OutputFile FilePath
+  deriving (Show)
+
+inp :: Parser FilePath
+inp =
+  strOption
+    ( long "input"
+        <> short 'i'
+        <> metavar "FILE"
+        <> help "Input file"
+    )
+
+out :: Parser FilePath
+out =
+  strOption
+    ( long "output"
+        <> short 'o'
+        <> metavar "FILE"
+        <> help "Output file"
     )
